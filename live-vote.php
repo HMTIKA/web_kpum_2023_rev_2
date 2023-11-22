@@ -1,3 +1,20 @@
+<?php
+include 'backend/user/user_access.php';
+include 'backend/connect/conn.php';
+function query($query)
+{
+    $result = mysqli_query($GLOBALS['conn'], $query);
+    $rows = [];
+    while ($row = mysqli_fetch_assoc($result)) {
+        $rows[] = $row;
+    }
+    return $rows;
+}
+
+$data_kandidat = query("SELECT * FROM kandidat");
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -27,22 +44,22 @@
             <div class="collapse navbar-collapse justify-content-end text-center" id="navbarNav">
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a class="nav-link active" href="index">HOME</a>
+                        <a class="nav-link active" href="/">HOME</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" href="contributor">CONTRIBUTOR</a>
+                        <a class="nav-link active" href="/contributor">CONTRIBUTOR</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="live-vote">LIVE VOTE</a>
+                        <a class="nav-link" href="/live-vote">LIVE VOTE</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="account-checker">ACCOUNT CHECKER</a>
+                        <a class="nav-link" href="/user/account-checker">ACCOUNT CHECKER</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="sign-up">SIGN-UP</a>
+                        <a class="nav-link" href="/user/sign-up">SIGN-UP</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="sign-in">SIGN-IN</a>
+                        <a class="nav-link" href="/user/sign-in">SIGN-IN</a>
                     </li>
                 </ul>
             </div>
@@ -70,75 +87,33 @@
                 <h1 class="mb-2">LIVE VOTE</h1>
             </div>
             <div class="row">
-                <div class="col-lg-4">
-                    <div class="card p-3 mb-4">
-                        <h2 class="card-title">KANDIDAT NOMOR 1</h2>
-                        <img src="aset/images/picture.jpg" alt="" class="card-image mb-2 w-100">
-                        <p class="mb-2 card-text">NAMA CAPRESMA & NAMA CAWAPRESMA</p>
-                        <p>
-                            Jumlah Suara :
-                            <?php
-                            $total_suara_masuk = 512;
-                            $suara_satu = 120;
-                            echo $suara_satu;
-                            ?>
-                            ( <?php
-                                echo  $suara_satu / $total_suara_masuk * 100;
-                                ?> % )
-                        </p>
-                        <div class="bars">
-                            <div class="bars-width" style="
-                                width:<?php echo $suara_satu / $total_suara_masuk * 100 ?>%
+                <?php $i = 1 ?>
+                <?php foreach ($data_kandidat as $kandidat) { ?>
+                    <div class="col-lg-4">
+                        <div class="card p-3 mb-4">
+                            <h2 class="card-title">KANDIDAT NOMOR <?= $i ?></h2>
+                            <img src="aset/images/picture.jpg" alt="" class="card-image mb-2 w-100">
+                            <p class="mb-2 card-text">NAMA CAPRESMA & NAMA CAWAPRESMA</p>
+                            <p>
+                                Jumlah Suara :
+                                <?php
+                                $total_suara_masuk = count(query("SELECT * FROM votes"));
+                                $suara_paslon = count(query("SELECT * FROM votes WHERE candidate_selected = '$i'"));
+                                echo $suara_paslon;
+                                ?>
+                                ( <?php
+                                    echo  $suara_paslon / $total_suara_masuk * 100;
+                                    ?> % )
+                            </p>
+                            <div class="bars">
+                                <div class="bars-width" style="
+                                width:<?php echo $suara_paslon / $total_suara_masuk * 100 ?>%
                             "></div>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-lg-4">
-                    <div class="card p-3 mb-4">
-                        <h2 class="card-title">KANDIDAT NOMOR 2</h2>
-                        <img src="aset/images/picture.jpg" alt="" class="card-image mb-2 w-100">
-                        <p class="mb-2 card-text">NAMA CAPRESMA & NAMA CAWAPRESMA</p>
-                        <p>
-                            Jumlah Suara :
-                            <?php
-                            $total_suara_masuk = 512;
-                            $suara_dua = 256;
-                            echo $suara_dua;
-                            ?>
-                            ( <?php
-                                echo  $suara_dua / $total_suara_masuk * 100;
-                                ?> % )
-                        </p>
-                        <div class="bars">
-                            <div class="bars-width" style="
-                                width:<?php echo $suara_dua / $total_suara_masuk * 100 ?>%
-                            "></div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4">
-                    <div class="card p-3 mb-4">
-                        <h2 class="card-title">KANDIDAT NOMOR 3</h2>
-                        <img src="aset/images/picture.jpg" alt="" class="card-image mb-2 w-100">
-                        <p class="mb-2 card-text">NAMA CAPRESMA & NAMA CAWAPRESMA</p>
-                        <p>
-                            Jumlah Suara :
-                            <?php
-                            $total_suara_masuk = 512;
-                            $suara_tiga = 136;
-                            echo $suara_tiga;
-                            ?>
-                            ( <?php
-                                echo  $suara_tiga / $total_suara_masuk * 100;
-                                ?> % )
-                        </p>
-                        <div class="bars">
-                            <div class="bars-width" style="
-                                width:<?php echo $suara_tiga / $total_suara_masuk * 100 ?>%
-                            "></div>
-                        </div>
-                    </div>
-                </div>
+                    <?php $i = $i + 1 ?>
+                <?php } ?>
             </div>
         </div>
     </section>

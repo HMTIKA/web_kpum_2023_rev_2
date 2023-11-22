@@ -1,3 +1,7 @@
+<?php 
+    include 'backend/user/user_access.php'
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -7,6 +11,8 @@
     <title>PEMILIHAN PRESIDEN DAN WAKIL PRESIDEN MAHASISWA</title>
     <link rel="stylesheet" href="aset/css/bootstrap.css">
     <link rel="stylesheet" href="aset/css/style.css">
+
+    <link rel="shortcut icon" href="/aset/images/BEM.png" type="image/x-png">
 </head>
 
 <body>
@@ -27,22 +33,22 @@
             <div class="collapse navbar-collapse justify-content-end text-center" id="navbarNav">
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a class="nav-link active" href="index">HOME</a>
+                        <a class="nav-link active" href="/">HOME</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" href="contributor">CONTRIBUTOR</a>
+                        <a class="nav-link active" href="/contributor">CONTRIBUTOR</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="live-vote">LIVE VOTE</a>
+                        <a class="nav-link" href="/live-vote">LIVE VOTE</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="account-checker">ACCOUNT CHECKER</a>
+                        <a class="nav-link" href="/user/account-checker">ACCOUNT CHECKER</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="sign-up">SIGN-UP</a>
+                        <a class="nav-link" href="/user/sign-up">SIGN-UP</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="sign-in">SIGN-IN</a>
+                        <a class="nav-link" href="/user/sign-in">SIGN-IN</a>
                     </li>
                 </ul>
             </div>
@@ -65,10 +71,10 @@
                     </div>
                     <div class="row mt-3">
                         <div class="col-lg-6">
-                            <a href="sign-up" class="btn btn-lg mb-3">REGISTRASI</a>
+                            <a href="user/sign-up" class="btn btn-lg mb-3">REGISTRASI</a>
                         </div>
                         <div class="col-lg-6">
-                            <a href="sign-in" class="btn btn-lg">LOGIN</a>
+                            <a href="user/sign-in" class="btn btn-lg">LOGIN</a>
                         </div>
                     </div>
                 </div>

@@ -1,3 +1,67 @@
+<?php
+session_start();
+include('../../backend/connect/conn.php');
+
+// username = Admin_KPUM_STB
+// password = 2qg853Ta
+
+if (!$_SESSION['auth_one']) {
+    header("Location: /");
+}
+
+if (isset($_SESSION["admin"])) {
+    // Redirect ke halaman lain jika sudah login
+    header("Location: ../dashboard"); // Ganti dengan halaman tujuan setelah login
+    exit();
+}
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $username = mysqli_real_escape_string($conn, $_POST['username']);
+    $password = mysqli_real_escape_string($conn, $_POST['password']);
+
+    // Query untuk memeriksa kredensial pengguna
+    if (empty($username) || empty($password)) {
+        header("Location: /"); // Redirect ke halaman lain atau tampilkan pesan kesalahan sesuai kebijakan Anda
+    } else {
+        // Perhatikan bahwa tidak ada tanda kutip pada nama tabel 'admin' dan tambahkan kolom yang ingin Anda pilih
+        $query = "SELECT * FROM admin WHERE username = ?";
+        $stmt = $conn->prepare($query);
+        $stmt->bind_param("s", $username);
+        $stmt->execute();
+        if ($stmt->error) {
+            die("Query execution error: " . $stmt->error);
+        }
+        $result = $stmt->get_result();
+        $stmt->close();
+
+        if ($result->num_rows == 1) {
+            $row = $result->fetch_assoc();
+
+            // Verifikasi password dengan password_verify
+            if (password_verify($password, $row["password"])) {
+                $_SESSION['admin'] = $username;
+                header("Location: /admin");
+            } else {
+?>
+                <script>
+                    alert("Password salah");
+                </script>
+            <?php
+                header("Location: /");
+            }
+        } else {
+            ?>
+            <script>
+                alert("Username salah");
+            </script>
+<?php
+            header("Location: /");
+        }
+    }
+}
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -23,9 +87,9 @@
                         <div class="container">
                             <form method="post">
                                 <p>USERNAME</p>
-                                <input type="text" id="username" name="username" placeholder="USERNAME">
+                                <input type="text" id="username" name="username" placeholder="USERNAME" required>
                                 <p>PASSWORD</p>
-                                <input type="text" id="password" name="password" placeholder="PASSWORD">
+                                <input type="password" id="password" name="password" placeholder="PASSWORD" required>
                                 <button type="submit" name="submit" class="btn btn-lg btn-primary w-50 mt-3 text-light">LOGIN</button>
                             </form>
                         </div>

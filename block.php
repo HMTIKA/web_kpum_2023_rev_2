@@ -1,10 +1,14 @@
+<?php 
+include 'backend/user/user_access.php';
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SIGN-UP</title>
+    <title>BLOCKED ACCESS</title>
     <link rel="stylesheet" href="aset/css/bootstrap.css">
     <link rel="stylesheet" href="aset/css/style.css">
 </head>
@@ -50,36 +54,65 @@
     <!-- end navbar -->
 
     <!-- JUMBOTRON 2 -->
-    <section class="jumbotron-2 mt-5 pt-5">
+    <section class="jumbotron">
         <div class="container">
             <div class="row">
-                <p>
-                    <a href="../">HOME</a> >
-                    SIGN UP
-                </p>
+                <h1>GOT BLOCKED</h1>
+                <h2>IP ADDRESS :
+                    <?php
+                    $ip_add = $_SERVER['REMOTE_ADDR'];
+                    echo $ip_add;
+                    ?>
+                </h2>
+                <h2>DEVICE :
+                    <?php
+                    function isMobile()
+                    {
+                        return preg_match("/(android|avantgo|blackberry|bolt|boost|cricket|docomo|fone|hiptop|mini|mobi|palm|phone|pie|tablet|up\.browser|up\.link|webos|wos)/i", $_SERVER["HTTP_USER_AGENT"]);
+                    }
+
+                    if (isMobile()) {
+                        echo 'Mobile';
+                    } else {
+                        echo 'Desktop';
+                    }
+                    ?>                    
+                </h2>
+                <h2>WEB BROWSER :
+                    <?php
+
+                    function getBrowser()
+                    {
+                        $user_agent = $_SERVER['HTTP_USER_AGENT'];
+                        $browser = "N/A";
+
+                        $browsers = [
+                            '/msie/i' => 'Internet explorer',
+                            '/firefox/i' => 'Firefox',
+                            '/safari/i' => 'Safari',
+                            '/chrome/i' => 'Chrome',
+                            '/edge/i' => 'Edge',
+                            '/opera/i' => 'Opera',
+                            '/mobile/i' => 'Mobile browser',
+                        ];
+
+                        foreach ($browsers as $regex => $value) {
+                            if (preg_match($regex, $user_agent)) {
+                                $browser = $value;
+                            }
+                        }
+
+                        return $browser;
+                    }
+
+                    echo getBrowser();
+
+                    ?>
+                </h2>
             </div>
         </div>
     </section>
     <!-- END JUMBOTRON 2 -->
-
-    <!-- ADD VOTERS -->
-    <section class="sign-up">
-        <div class="container">
-            <div class="row">
-                <h1>REGISTRASI PEMILIH</h1>
-            </div>
-            <div class="row">
-                <form action="#">
-                    <label class="mt-3 mb-1">Nomor : </label>
-                    <input type="text" name="nama" id="" placeholder=" INPUT NIM atau NIDK">
-                    <button type="submit" class="btn btn-lg btn-primary mt-3">DAFTAR</button>
-                </form>
-            </div>
-        </div>
-    </section>
-    <!-- END ADD VOTERS -->
-
-
 
 
     <script src="aset/js/jquery-3.5.1.js"></script>

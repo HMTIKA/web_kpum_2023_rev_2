@@ -1,3 +1,30 @@
+<?php
+
+session_start();
+include('../backend/connect/conn.php');
+
+if (!$_SESSION["admin"]) {
+    // Redirect ke halaman login jika belum login
+    header("Location: /");
+}
+
+function query($query) {
+    $result = mysqli_query($GLOBALS['conn'], $query);
+    $rows = [];
+    while($row = mysqli_fetch_assoc($result)) {
+        $rows[] = $row;
+    }
+    return $rows;
+}
+// total pemilih
+$total_pemilih = count(query("SELECT * FROM data_induk_pemilih"));
+// total suara masuk 
+$total_suara_masuk = count(query("SELECT * FROM data_induk_pemilih WHERE is_voted = '1'"));
+// total sisa suara masuk
+$total_suara_belum_masuk = count(query("SELECT * FROM data_induk_pemilih WHERE is_voted = '0'"));
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -30,35 +57,35 @@
     <div class="sidebar">
         <h2>USER VIEW</h2>
         <ul>
-            <li>
+        <li>
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-right" viewBox="0 0 16 16">
                     <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z" />
                 </svg>
-                <a href="../">HOME PAGE</a>
+                <a href="/">HOME PAGE</a>
             </li>
             <li>
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-right" viewBox="0 0 16 16">
                     <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z" />
                 </svg>
-                <a href="../live-vote">LIVE VOTE</a>
+                <a href="/live-vote">LIVE VOTE</a>
             </li>
             <li>
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-right" viewBox="0 0 16 16">
                     <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z" />
                 </svg>
-                <a href="../sign-up">REGISTRASI</a>
+                <a href="/user/sign-up">REGISTRASI</a>
             </li>
             <li>
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-right" viewBox="0 0 16 16">
                     <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z" />
                 </svg>
-                <a href="../account-checker">CEK REGITRASI</a>
+                <a href="/user/account-checker">CEK REGITRASI</a>
             </li>
             <li>
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-right" viewBox="0 0 16 16">
                     <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z" />
                 </svg>
-                <a href="../sign-in">LOGIN PEMILIH</a>
+                <a href="/user/sign-in">LOGIN PEMILIH</a>
             </li>
         </ul>
 
@@ -160,7 +187,7 @@
                     <a class="card mb-3">
                         <h3>Total Pemilih </h3>
                         <p>
-                            <?php echo "512" ?>
+                            <?= $total_pemilih ?>
                             Pemilih</p>
                     </a>
                 </div>
@@ -168,7 +195,7 @@
                     <a class="card mb-3">
                         <h3>Total Suara Masuk </h3>
                         <p>
-                            <?php echo "256" ?>
+                            <?= $total_suara_masuk ?>
                             Suara</p>
                     </a>
                 </div>
@@ -176,7 +203,7 @@
                     <a class="card mb-3">
                         <h3>Sisa Suara Masuk </h3>
                         <p>
-                            <?php echo "256" ?>
+                            <?= $total_suara_belum_masuk ?>
                             Suara</p>
                     </a>
                 </div>

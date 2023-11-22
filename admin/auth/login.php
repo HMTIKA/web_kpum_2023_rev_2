@@ -2,6 +2,12 @@
 
 session_start();
 
+if (isset($_SESSION["auth_one"])) {
+    // Redirect ke halaman lain jika sudah login
+    header("Location: login-v2"); // Ganti dengan halaman tujuan setelah login
+    exit();
+}
+
 if (isset($_POST['login'])) {
 
     // username : Admin
@@ -22,7 +28,7 @@ if (isset($_POST['login'])) {
 
 
     if ($username_encrypt == "KnwsxHktpuVyhdiMpyuz" AND $password_encrypt == "NSpkmVKPmhjSYDavxGPUrmoXYDavxGKPmhjSNSpkmV") {
-        $_SESSION["authone"] = $username;
+        $_SESSION["auth_one"] = $username;
         header("location:login-v2");
     } else {
 ?>
@@ -60,9 +66,9 @@ if (isset($_POST['login'])) {
                         <div class="container">
                             <form method="post">
                                 <p>USERNAME</p>
-                                <input type="text" id="username" name="username" placeholder="USERNAME">
+                                <input type="text" id="username" name="username" placeholder="USERNAME" required>
                                 <p>PASSWORD</p>
-                                <input type="text" id="password" name="password" placeholder="PASSWORD">
+                                <input type="password" id="password" name="password" placeholder="PASSWORD" required>
                                 <button type="submit" name="login" class="btn btn-lg btn-primary w-50 mt-3 text-light">LOGIN</button>
                             </form>
                         </div>

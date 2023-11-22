@@ -1,3 +1,26 @@
+<?php
+include('../backend/connect/conn.php');
+session_start();
+function query($query)
+{
+    $result = mysqli_query($GLOBALS['conn'], $query);
+    $rows = [];
+    while ($row = mysqli_fetch_assoc($result)) {
+        $rows[] = $row;
+    }
+    return $rows;
+}
+
+$voters_data = query("SELECT * FROM data_induk_pemilih");
+?>
+<?php 
+    if (isset($_SESSION["admin"])) {
+        // Redirect ke halaman login jika belum login
+        header("Location: /");
+        exit();
+    }
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -34,31 +57,31 @@
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-right" viewBox="0 0 16 16">
                     <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z" />
                 </svg>
-                <a href="../">HOME PAGE</a>
+                <a href="/">HOME PAGE</a>
             </li>
             <li>
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-right" viewBox="0 0 16 16">
                     <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z" />
                 </svg>
-                <a href="../live-vote">LIVE VOTE</a>
+                <a href="/live-vote">LIVE VOTE</a>
             </li>
             <li>
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-right" viewBox="0 0 16 16">
                     <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z" />
                 </svg>
-                <a href="../sign-up">REGISTRASI</a>
+                <a href="/user/sign-up">REGISTRASI</a>
             </li>
             <li>
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-right" viewBox="0 0 16 16">
                     <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z" />
                 </svg>
-                <a href="../account-checker">CEK REGITRASI</a>
+                <a href="/user/account-checker">CEK REGITRASI</a>
             </li>
             <li>
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-right" viewBox="0 0 16 16">
                     <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z" />
                 </svg>
-                <a href="../sign-in">LOGIN PEMILIH</a>
+                <a href="/user/sign-in">LOGIN PEMILIH</a>
             </li>
         </ul>
 
@@ -185,78 +208,46 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <th scope="row">
-                                <?php echo "1" ?>
-                            </th>
-                            <td>
-                                <input type="text" value="<?php echo "Imam Nurfalah" ?>">
-                            </td>
-                            <td>
-                                <input type="text" value="<?php echo "SITIS220322" ?>">
-                            </td>
-                            <td>
-                                <input type="text" value="<?php echo "T2HABA" ?>">
-                            </td>
-                            <td>
-                                <?php
-                                $isvoted = 0;
-                                if ($isvoted == 1) {
-                                ?>
-                                    <p class="text-success">Sudah Memilih</p>
-                                <?php
-                                } else {
-                                ?>
-                                    <p class="text-danger">Belum Memilih</p>
-                                <?php
-                                }
-                                ?>
-                            </td>
-                            <td>
-                                <button class="btn btn-md btn-warning w-100 mb-2">
-                                    Update
-                                </button>
-                                <button class="btn btn-md btn-danger w-100 mb-2">
-                                    Delete
-                                </button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th scope="row">
-                                <?php echo "2" ?>
-                            </th>
-                            <td>
-                                <input type="text" value="<?php echo "Agung" ?>">
-                            </td>
-                            <td>
-                                <input type="text" value="<?php echo "SITIS210333" ?>">
-                            </td>
-                            <td>
-                                <input type="text" value="<?php echo "W52XN2" ?>">
-                            </td>
-                            <td>
-                                <?php
-                                $isvoted = 1;
-                                if ($isvoted == 1) {
-                                ?>
-                                    <p class="text-success">Sudah Memilih</p>
-                                <?php
-                                } else {
-                                ?>
-                                    <p class="text-danger">Belum Memilih</p>
-                                <?php
-                                }
-                                ?>
-                            </td>
-                            <td>
-                                <button class="btn btn-md btn-warning w-100 mb-2">
-                                    Update
-                                </button>
-                                <button class="btn btn-md btn-danger w-100 mb-2">
-                                    Delete
-                                </button>
-                            </td>
-                        </tr>
+                        <?php $i = 1; ?>
+                        <?php foreach ($voters_data as $voter) { ?>
+                            <tr>
+                                <th scope="row">
+                                    <?= $i ?>
+                                </th>
+                                <td>
+                                    <input type="text" value="<?= $voter['name']; ?>">
+                                </td>
+                                <td>
+                                    <input type="text" value="<?= $voter['identity_number']; ?>">
+                                </td>
+                                <td>
+                                    <input type="text" value="<?= $voter['voter_token']; ?>">
+                                </td>
+                                <td>
+                                    <?php
+                                    $isvoted = $voter['is_voted'];
+                                    if ($isvoted == 1) {
+                                    ?>
+                                        <p class="text-success">Sudah Memilih</p>
+                                    <?php
+                                    } else {
+                                    ?>
+                                        <p class="text-danger">Belum Memilih</p>
+                                    <?php
+                                    }
+                                    ?>
+                                </td>
+                                <td>
+                                    <button class="btn btn-md btn-warning w-100 mb-2">
+                                        Update
+                                    </button>
+                                    <button class="btn btn-md btn-danger w-100 mb-2">
+                                        Delete
+                                    </button>
+                                </td>
+                            </tr>
+                        <?php $i = $i + 1?>
+                        <?php } ?>
                     </tbody>
                 </table>
             </div>
